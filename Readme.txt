@@ -1,5 +1,5 @@
 My repo to hold the code that I write as I work through lib-gdx tutorials
-- This branch will largely stay empty while the branches contain the relevant code
+- This branch will largely stay empty while the sub-branches contain the relevant code
 
 The repository contains two types of branches: tutorials and challenges
 
