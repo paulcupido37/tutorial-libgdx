@@ -4,21 +4,28 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 public class MyGdxGame implements ApplicationListener
 {
+	
+	private Sprite sprite;
+	private Texture texture;
 	private SpriteBatch batch;
-	private BitmapFont font;
 
 	public void create() 
 	{
-		// instantiates the sprite batch
-		batch = new SpriteBatch();
-		font = new BitmapFont();
-		font.setColor(Color.RED);
+		// instantiates the sprite batch, texture and the sprite
+		batch   = new SpriteBatch();
+		
+		// the texture represents the underlying GL texture
+		texture = new Texture(Gdx.files.internal("jet.png"));
+
+		// stores the positional and colour data of the texture
+		sprite  = new Sprite(texture);
 	}
 
 	@Override
@@ -32,9 +39,7 @@ public class MyGdxGame implements ApplicationListener
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
-		font.draw(batch, "Hello World", 
-				Gdx.graphics.getWidth()/2 - font.getLineHeight()/2, 
-				Gdx.graphics.getHeight()/2 - font.getLineHeight()/2);
+		sprite.draw(batch);
 		batch.end();
 	}
 
@@ -50,8 +55,9 @@ public class MyGdxGame implements ApplicationListener
 
 	public void dispose() 
 	{
-		font.dispose();
-		batch.dispose();		
+		// I wonder why the texture is not disposed?
+		batch.dispose();
+		texture.dispose();
 	}
 	
 }
