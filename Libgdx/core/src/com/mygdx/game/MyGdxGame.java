@@ -55,9 +55,12 @@ public class MyGdxGame implements ApplicationListener
 
 	public void dispose() 
 	{
-		// I wonder why the texture is not disposed?
+		// The sprite is not disposed because it does not implement the disposable interface
+		// Everything that can be disposed must be disposed
+		
 		batch.dispose();
 		texture.dispose();
+		
 	}
 	
 }
