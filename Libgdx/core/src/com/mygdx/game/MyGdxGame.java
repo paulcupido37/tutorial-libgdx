@@ -1,104 +1,76 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
+
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-
-public class MyGdxGame implements ApplicationListener
+public class MyGdxGame extends ApplicationAdapter
 {
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private Texture img;
+	
 	private Sprite sprite;
-
-	/** 
-	 * The create method sees to it that all instance variables are initialized
-	 * */
+	private TextureAtlas textureAtlas;
+	private TextureRegion textureRegion;
+	
+	private int currentFrame = 1;
+	public static final int MAX_FRAMES = 19;
+	
 	public void create() 
 	{
-		// instantiates the sprite batch
+		// Instantiates the sprite batch
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		font.setColor(Color.RED);
 		
-		// instantiates the texture
-		img = new Texture("hello-world.png");
+		// instantiate the texture atlas and region
+		textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/spritesheet.atlas"));
+		textureRegion = new TextureRegion(textureAtlas.findRegion(String.format("%04d", 1)));
 		
-		// instantiates the sprite
-		sprite = new Sprite(img);
+		// Instantiates the sprite from the TextureRegion
+		sprite = new Sprite(textureRegion);
 		
-		// sets the position of the sprite on the screen - sprite will be drawn in the center
+		// Sets the position of the sprite on the screen - sprite will be drawn in the center
 		sprite.setPosition(Gdx.graphics.getWidth()/2 - sprite.getWidth()/2, 
 				Gdx.graphics.getHeight()/2 - sprite.getHeight()/2);
 		
-		// rotates the sprite 90 degrees (pi/2 radians) about the origin (which is set to 0,0 by default)
-		sprite.setRotation(90f);
-		
-		// scales the sprite
-		sprite.setScale(2.0f, 1.0f);
-	}
-
-	@Override
-	public void resize(int width, int height) 
-	{
-		// TODO Auto-generated method stub
-		
+		// Uses a timer to change the sprite to a different position in the texture atlas 30 times per second
+		Timer.schedule(new Task(){
+			public void run()
+			{
+				currentFrame++;
+				if (currentFrame > MAX_FRAMES) {
+					currentFrame = 1;
+				}
+				sprite.setRegion(textureAtlas.findRegion(String.format("%04d", currentFrame)));
+			}
+		}, 0, 1/30.0f);
 	}
 
 	/** Renders the scene*/
 	public void render() 
 	{
-		// open up open gl inside here and draw all objects which are to be drawn
-		// no calculations related to game artifacts should be done here - and not while open gl is drawing
-			
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
-		// draw textures/ artifacts here
-		
-		// Challenge 1: Print out the diary of prophecy
-		// Challenge 2: Create the Star Wars crawl
-		
-		font.draw(batch, "Hello World", 400, 400);
-		
-		// draws the sprite - here I'm rotating the sprite
-		batch.draw(sprite, sprite.getX(), sprite.getY(), 
-				sprite.getWidth()/2, 
-				sprite.getHeight()/2, 
-				sprite.getWidth(),
-				sprite.getHeight(),
-				sprite.getScaleX(), 
-				sprite.getScaleY(), 
-				sprite.getRotation());
+		sprite.draw(batch);
 		batch.end();
 	
 	}
 
-	@Override
-	public void pause() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	/** Destroys unnecessary / no longer used objects - functionally similar to a destructor method, I imagine?*/
 	public void dispose() 
 	{
-		// free up the resources held by font and batch
 		font.dispose();
 		batch.dispose();
 		
