@@ -1,0 +1,76 @@
+
+mainmenu-spritesheet.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+campaign-button
+  rotate: false
+  xy: 836, 406
+  size: 153, 56
+  orig: 153, 56
+  offset: 0, 0
+  index: -1
+campaign-selected
+  rotate: false
+  xy: 317, 233
+  size: 234, 88
+  orig: 234, 88
+  offset: 0, 0
+  index: -1
+challenge-button
+  rotate: false
+  xy: 584, 319
+  size: 152, 48
+  orig: 152, 48
+  offset: 0, 0
+  index: -1
+challenge-selected
+  rotate: false
+  xy: 584, 369
+  size: 250, 93
+  orig: 250, 93
+  offset: 0, 0
+  index: -1
+legends-banner
+  rotate: false
+  xy: 2, 115
+  size: 286, 151
+  orig: 286, 151
+  offset: 0, 0
+  index: -1
+legends-heroes
+  rotate: false
+  xy: 2, 268
+  size: 313, 194
+  orig: 313, 194
+  offset: 0, 0
+  index: -1
+quit-button
+  rotate: false
+  xy: 290, 183
+  size: 142, 48
+  orig: 142, 48
+  offset: 0, 0
+  index: -1
+quit-selected
+  rotate: false
+  xy: 317, 323
+  size: 265, 139
+  orig: 265, 139
+  offset: 0, 0
+  index: -1
+shop-button
+  rotate: false
+  xy: 836, 354
+  size: 144, 50
+  orig: 144, 50
+  offset: 0, 0
+  index: -1
+shop-selected
+  rotate: false
+  xy: 2, 2
+  size: 257, 111
+  orig: 257, 111
+  offset: 0, 0
+  index: -1
