@@ -10,7 +10,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title ="hello-world";
+		config.title ="Challenge: Interactive Menu";
 		config.width = 800;
 		config.height = 600;
 		new LwjglApplication(new MyGdxGame(), config);

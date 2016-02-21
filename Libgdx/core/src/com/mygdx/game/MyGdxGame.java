@@ -1,20 +1,23 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 
-public class MyGdxGame implements ApplicationListener
+public class MyGdxGame extends ApplicationAdapter
 {
+	private TextureAtlas textureAtlas;
+	private TextureRegion textureRegion;
+	
 	private SpriteBatch batch;
-	private BitmapFont font;
-	private Texture img;
 	private Sprite sprite;
 
 	/** 
@@ -24,24 +27,26 @@ public class MyGdxGame implements ApplicationListener
 	{
 		// instantiates the sprite batch
 		batch = new SpriteBatch();
-		font = new BitmapFont();
-		font.setColor(Color.RED);
 		
-		// instantiates the texture
-		img = new Texture("hello-world.png");
+		// instantiates the texture atlas and region
+		textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/mainmenu-spritesheet.atlas"));
+		textureRegion = textureAtlas.findRegion("legends-banner");
 		
-		// instantiates the sprite
-		sprite = new Sprite(img);
+		/* It may be better to use an array of texture regions.
+		 * The other option is to use the textureAtlas.findRegion() method to select the texture to be displayed.
+		 * This would then require an array of sprites, though I think those are necessary anyway. */
+		
+		Array<AtlasRegion> regions = textureAtlas.getRegions();
+		
+		// need to check if this the best way to do the sprite switching
+		sprite = new Sprite(new Texture(Gdx.files.internal("spritesheets/mainmenu-spritesheet.png")));
+		//sprite = textureRegion.;//setRegion(textureAtlas.findRegion("legends-banner").getTexture());
 		
 		// sets the position of the sprite on the screen - sprite will be drawn in the center
 		sprite.setPosition(Gdx.graphics.getWidth()/2 - sprite.getWidth()/2, 
 				Gdx.graphics.getHeight()/2 - sprite.getHeight()/2);
 		
-		// rotates the sprite 90 degrees (pi/2 radians) about the origin (which is set to 0,0 by default)
-		sprite.setRotation(90f);
 		
-		// scales the sprite
-		sprite.setScale(2.0f, 1.0f);
 	}
 
 	@Override
@@ -61,45 +66,16 @@ public class MyGdxGame implements ApplicationListener
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
-		// draw textures/ artifacts here
-		
-		// Challenge 1: Print out the diary of prophecy
-		// Challenge 2: Create the Star Wars crawl
-		
-		font.draw(batch, "Hello World", 400, 400);
 		
 		// draws the sprite - here I'm rotating the sprite
-		batch.draw(sprite, sprite.getX(), sprite.getY(), 
-				sprite.getWidth()/2, 
-				sprite.getHeight()/2, 
-				sprite.getWidth(),
-				sprite.getHeight(),
-				sprite.getScaleX(), 
-				sprite.getScaleY(), 
-				sprite.getRotation());
+		sprite.draw(batch);
 		batch.end();
 	
 	}
 
-	@Override
-	public void pause() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	/** Destroys unnecessary / no longer used objects - functionally similar to a destructor method, I imagine?*/
 	public void dispose() 
 	{
 		// free up the resources held by font and batch
-		font.dispose();
 		batch.dispose();
 		
 	}
