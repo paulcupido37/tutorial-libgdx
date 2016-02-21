@@ -23,8 +23,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 	private SpriteBatch batch;
 	private TextureAtlas atlas;
 	private TextureRegion region;
-	
+
 	private int currentFrame = 1;
+	private boolean movingRight =false;
+	private boolean movingLeft =false;
 	
 	public void create() 
 	{
@@ -62,7 +64,12 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 	/** Renders the scene*/
 	public void render() 
 	{
-			
+		if (movingRight) {
+			sprite.translateX(1.0f);
+		}
+		if (movingLeft) {
+			sprite.translateX(-1.0f);
+		}
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -82,27 +89,23 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 	{
 		// Moves the sprite to the left or right based on player input - uses the edges the of the screen as a barrier
 		if (keycode == Input.Keys.LEFT) 
-		{
-			if (!((sprite.getX() - 5) <= 0))
-			{
-				sprite.setPosition(sprite.getX() - 5, sprite.getY());
-			}
-		}
+			movingLeft = true;
 		if (keycode == Input.Keys.RIGHT) 
-		{
-			if (!((sprite.getX() + 5) >= Gdx.graphics.getWidth())) 
-			{
-				sprite.setPosition(sprite.getX() + 5, sprite.getY());
-			}			
-		}
+			movingRight = true;
 		
 		sprite.setRegion(atlas.findRegion(String.format("%04d", currentFrame)));
 		
 		return false;
 	}
 
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
+	public boolean keyUp(int keycode) 
+	{
+		if (keycode == Input.Keys.LEFT) {
+			movingLeft = false;
+		} else if (keycode == Input.Keys.RIGHT) {
+			movingRight = false;
+		}
+
 		return false;
 	}
 
