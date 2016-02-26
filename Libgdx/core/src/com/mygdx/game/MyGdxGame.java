@@ -26,9 +26,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 	
 	private int selectButton =0;
 
-	/** 
-	 * The create method sees to it that all instance variables are initialized
-	 * */
+
 	public void create() 
 	{
 		
@@ -109,7 +107,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 	{
 		// free up the resources held by font and batch
 		batch.dispose();
-		
+		textureAtlas.dispose();
 	}
 
 	@Override
