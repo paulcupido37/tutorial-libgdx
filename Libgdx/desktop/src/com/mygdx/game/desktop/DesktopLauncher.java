@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.RecorderDemo;
 
 
 public class DesktopLauncher {
@@ -13,6 +14,6 @@ public class DesktopLauncher {
 		config.title ="hello-world";
 		config.width = 800;
 		config.height = 600;
-		new LwjglApplication(new MyGdxGame(), config);
+		new LwjglApplication(new RecorderDemo(), config);
 	}
 }
