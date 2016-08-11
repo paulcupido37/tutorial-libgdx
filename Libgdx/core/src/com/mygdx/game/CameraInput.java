@@ -5,8 +5,13 @@ import com.badlogic.gdx.InputAdapter;
 
 public class CameraInput extends InputAdapter
 {
+	
+	
 	// Counter for the number of inputs
 	private int numberOfInputs = 0;
+	
+	// Speed that the camera moves at
+	private float cameraSpeed = 2.5f;
 	
 	// Translation coordinates 
 	private float translateX = 0f;
@@ -25,22 +30,22 @@ public class CameraInput extends InputAdapter
 		
 			case(Input.Keys.RIGHT): 
 				
-				translateX = 1.0f;
+				translateX = this.cameraSpeed;
 				cameraMovement = true;
 				break;
 				
 			case(Input.Keys.UP): 
-				translateY = 1.0f;
+				translateY = this.cameraSpeed;
 				cameraMovement = true;
 				break;
 				
 			case(Input.Keys.DOWN): 
-				translateY = -1.0f;
+				translateY = -1 * this.cameraSpeed;
 				cameraMovement = true;
 				break;
 				
 			case(Input.Keys.LEFT): 
-				translateX = -1.0f;
+				translateX = -1 * this.cameraSpeed;
 				cameraMovement = true;
 				break;
 		}

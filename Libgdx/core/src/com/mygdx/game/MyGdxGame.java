@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,6 +12,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /** Class to model a basic orthographic camera and its movement around the screen
  * 
@@ -21,13 +26,26 @@ public class MyGdxGame extends ApplicationAdapter
 {
 	private float cameraPositionX;
 	
+	
+
+	AtlasRegion rock1;
+
 	// Sprite and SpriteBatch
-	private Sprite sprite;
+	private ArrayList<Sprite> allSprites;
+	private Sprite grass;
+	private Sprite[][] rock2;
 	private SpriteBatch batch;
 	
 	// Texture and Orthographic Camera
 	private Texture texture;
 	private OrthographicCamera camera;
+	
+	public final int SCREEN_WIDTH = 1280;
+	public final int SCREEN_HEIGHT = 720;
+	
+	private TextureAtlas atlas   = null;
+	private TextureRegion region = null;
+	
 	
 	// Boolean to determine whether or not the camera is active 
 	private CameraInput cameraInput;
@@ -40,21 +58,50 @@ public class MyGdxGame extends ApplicationAdapter
 	 * */
 	public void create() 
 	{
+
+		allSprites = new ArrayList<Sprite>();
+		
 		// Initialize the Orthographic Camera at 1280 x 720p
-		camera = new OrthographicCamera(1280, 720);
+		camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		
 		cameraInput = new CameraInput();
 		
 		// instantiates the sprite batch
-		batch = new SpriteBatch();
-		
+		batch = new SpriteBatch();	
+		atlas = new TextureAtlas(Gdx.files.internal("survival_game.txt"));
+				
 		//loads the texture
-		texture = new Texture(Gdx.files.internal("Toronto Skyline.jpg"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		region = atlas.findRegion("grass_tile");
+		rock1 = atlas.findRegion("soft_rock");
+		int regionWidth = region.getRegionWidth();
+		int regionHeight = region.getRegionHeight();
 		
-		sprite = new Sprite(texture);
-		sprite.setOrigin(0, 0);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		int textureWidth = SCREEN_WIDTH / regionWidth;
+		int textureHeight = SCREEN_HEIGHT / regionHeight;
+		//texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+	
+		Sprite sprite = new Sprite();
+		
+		for (int x=0; x < textureWidth; x++) {
+				
+			for (int y =0; y < textureHeight; y++) {
+				sprite = new Sprite(region);
+				sprite.setOrigin(0,0);
+				sprite.setPosition(x * regionWidth, y * regionHeight);
+				allSprites.add(sprite);
+				
+				if (x == 0 || y == 0 || x == (textureWidth -1) || y == (textureHeight -1)) {
+					sprite = new Sprite(rock1);
+					sprite.setPosition(x * regionWidth, y * regionHeight);
+					allSprites.add(sprite);
+				}
+				
+			}
+			
+			
+		}
+		
+		
 		
 		Gdx.input.setInputProcessor(cameraInput);
 	}
@@ -78,7 +125,10 @@ public class MyGdxGame extends ApplicationAdapter
 		
 		// Draw the sprite
 		batch.begin();
-		sprite.draw(batch);	
+		for (int index = 0; index < allSprites.size(); index++) {
+			allSprites.get(index).draw(batch);
+		}
+			
 		batch.end();
 	}
 
@@ -86,6 +136,6 @@ public class MyGdxGame extends ApplicationAdapter
 	public void dispose() 
 	{
 		batch.dispose();
-		texture.dispose();
+		atlas.dispose();
 	}
 }
